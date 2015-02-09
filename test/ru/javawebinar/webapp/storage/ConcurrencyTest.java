@@ -31,8 +31,13 @@ public class ConcurrencyTest {
     }
 
     @Test
-    public void testMapStorage() throws Exception {
-        run(new MapStorage());
+    public void testSynchronizedMapStorage() throws Exception {
+        run(new SynchronizedMapStorage());
+    }
+
+    @Test
+    public void testConcurrentMapStorage() throws Exception {
+        run(new ConcurrentMapStorage());
     }
 
     private void run(IStorage storage) throws Exception {
