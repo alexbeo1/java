@@ -15,4 +15,16 @@
         <url-pattern>/resume</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>resumeList</servlet-name>
+        <jsp-file>/WEB-INF/jsp/list.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>resumeList</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/jsp/list.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
