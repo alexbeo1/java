@@ -1,7 +1,10 @@
 package ru.javawebinar.webapp.model;
 
+import ru.javawebinar.webapp.util.LocalDateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -47,8 +50,10 @@ public class Organization implements Serializable {
 
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
 
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate = NOW;
 
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
 
         private String position;
