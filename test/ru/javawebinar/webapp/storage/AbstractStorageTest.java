@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -40,26 +39,24 @@ abstract public class AbstractStorageTest {
         R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-        R2 = new Resume("Полное Имя2", null);
+        R2 = new Resume("Полное Имя2", "Location1");
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-        R3 = new Resume("Полное Имя3", null);
-        R1.addObjective("Objective1");
-        R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
-        R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
-        //TODO
-/*
-        R1.addOrganizationSection(SectionType.EXPERIENCE,
-                new Organization("Organization11", null,
-                        new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
-                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
-                new Organization("Organization12", "http://Organization12.ru"));
-        R1.addOrganizationSection(SectionType.EDUCATION,
-                new Organization("Institute", null,
-                        new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-                new Organization("Organization12", "http://Organization12.ru"));
-*/
+        R3 = new Resume("Полное Имя3", "");
+        if (storage.isSectionSupported()) {
+            R1.addObjective("Objective1");
+            R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
+            R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
+            R1.addOrganizationSection(SectionType.EXPERIENCE,
+                    new Organization("Organization11", null,
+                            new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
+                            new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")));
+            R1.addOrganizationSection(SectionType.EDUCATION,
+                    new Organization("Institute", null,
+                            new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                            new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                    new Organization("Organization12", "http://Organization12.ru"));
+        }
         storage.clear();
         storage.save(R3);
         storage.save(R1);

@@ -13,7 +13,7 @@ import java.util.List;
 public class MultiTextSection extends Section {
     static final long serialVersionUID = 1L;
 
-    private List<String> values;
+    private List<String> values = new LinkedList<>();
 
     public MultiTextSection(String... values) {
         this(new LinkedList<>(Arrays.asList(values)));

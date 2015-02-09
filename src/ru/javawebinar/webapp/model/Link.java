@@ -3,13 +3,14 @@ package ru.javawebinar.webapp.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * GKislin
  * 19.12.2014.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Link  implements Serializable {
+public class Link implements Serializable {
     static final long serialVersionUID = 1L;
 
     public static Link EMPTY = new Link();
@@ -18,7 +19,7 @@ public class Link  implements Serializable {
     private final String url;
 
     public Link() {
-        this("", null);
+        this("", "");
     }
 
     public Link(Link link) {
@@ -26,8 +27,9 @@ public class Link  implements Serializable {
     }
 
     public Link(String name, String url) {
+        Objects.requireNonNull(name, "name is null");
         this.name = name;
-        this.url = url;
+        this.url = url == null ? "" : url;
     }
 
     public static Link empty() {

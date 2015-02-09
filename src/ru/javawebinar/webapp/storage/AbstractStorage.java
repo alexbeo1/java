@@ -99,6 +99,11 @@ abstract public class AbstractStorage<C> implements IStorage {
         return list;
     }
 
+    @Override
+    public boolean isSectionSupported() {
+        return true;
+    }
+
     protected abstract List<Resume> doGetAll();
 
     public abstract int size();
