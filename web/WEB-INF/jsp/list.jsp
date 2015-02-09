@@ -1,7 +1,7 @@
-<%@ page import="ru.javawebinar.webapp.web.HtmlUtil" %>
-<%@ page import="ru.javawebinar.webapp.storage.XmlFileStorage" %>
+<%@ page import="ru.javawebinar.webapp.WebAppConfig" %>
 <%@ page import="ru.javawebinar.webapp.model.ContactType" %>
 <%@ page import="ru.javawebinar.webapp.model.Resume" %>
+<%@ page import="ru.javawebinar.webapp.web.HtmlUtil" %>
 <%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -30,15 +30,14 @@
                         <th>&nbsp;</th>
                     </tr>
                     <%
-                        XmlFileStorage storage = new XmlFileStorage("C:\\Java\\webapp5\\file_storage");
-                        Collection<Resume> resumes = storage.getAllSorted();
+                        Collection<Resume> resumes = WebAppConfig.get().getStorage().getAllSorted();
                         request.setAttribute("resumeList", resumes);
                     %>
                     <c:forEach items="${resumeList}" var="resume">
                         <jsp:useBean id="resume" type="ru.javawebinar.webapp.model.Resume"/>
                         <tr>
                             <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                            <td>${resume.location}</td>
+                            <td><%=HtmlUtil.mask(resume.getLocation())%></td>
                             <td><%=HtmlUtil.getContact(resume, ContactType.MAIL)%></td>
                             <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"></a></td>
                             <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></td>

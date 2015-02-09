@@ -1,21 +1,19 @@
 package ru.javawebinar.webapp.web;
 
+import ru.javawebinar.webapp.WebAppConfig;
 import ru.javawebinar.webapp.model.Resume;
 import ru.javawebinar.webapp.storage.IStorage;
-import ru.javawebinar.webapp.storage.XmlFileStorage;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * GKislin
  * 09.02.2015.
  */
 public class ResumeServlet extends HttpServlet {
-    public static XmlFileStorage storage = new XmlFileStorage("C:\\Java\\webapp5\\file_storage");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
@@ -33,6 +31,8 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         Resume r;
+        IStorage storage = WebAppConfig.get().getStorage();
+
         switch (action) {
             case "delete":
                 storage.delete(uuid);
