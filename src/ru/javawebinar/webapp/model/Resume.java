@@ -153,6 +153,10 @@ public class Resume implements Serializable {
         this.uuid = uuid;
     }
 
+    public void removeContact(ContactType type) {
+        contacts.remove(type);
+    }
+
 /*
     private String getEmail(List<Contact> list) {
         for (Contact c : list) {
