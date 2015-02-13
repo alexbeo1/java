@@ -15,7 +15,6 @@ public class WebAppConfig {
     private static final WebAppConfig INSTANCE = new WebAppConfig();
 
     private IStorage storage;
-    private Properties appProps;
 
     public static WebAppConfig get() {
         return INSTANCE;
@@ -31,7 +30,7 @@ public class WebAppConfig {
         ) {
             LogManager.getLogManager().readConfiguration(is);
 
-            appProps = new Properties();
+            Properties appProps = new Properties();
             appProps.load(webAppIs);
 //            storage = new XmlFileStorage(appProps.getProperty("storage.dir"));
             storage = new SqlStorage(
