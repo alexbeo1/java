@@ -55,7 +55,7 @@ public class SqlStorage implements IStorage {
         return sql.execute("SELECT * FROM resume r WHERE r.uuid=?", st -> {
             st.setString(1, uuid);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            if (!rs.next()) {
                 throw new WebAppException("Resume " + uuid + " is not exist");
             }
             Resume r = new Resume(uuid, rs.getString("full_name"),
@@ -77,6 +77,7 @@ public class SqlStorage implements IStorage {
 
     @Override
     public Collection<Resume> getAllSorted() {
+        // TODO implement
         // SELECT * FROM resume r ORDER BY full_name, uuid
         return null;
     }

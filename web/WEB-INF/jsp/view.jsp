@@ -1,5 +1,8 @@
+<%@ page import="ru.javawebinar.webapp.model.MultiTextSection" %>
+<%@ page import="ru.javawebinar.webapp.model.Section" %>
+<%@ page import="ru.javawebinar.webapp.model.SectionType" %>
+<%@ page import="ru.javawebinar.webapp.model.TextSection" %>
 <%@ page import="ru.javawebinar.webapp.web.HtmlUtil" %>
-<%@ page import="ru.javawebinar.webapp.model.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -79,7 +82,7 @@
             case EXPERIENCE:
             case EDUCATION:
         %>
-
+ <%--TODO implement--%>
             <%
                 }
             %>

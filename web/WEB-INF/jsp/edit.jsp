@@ -56,6 +56,8 @@
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
+    <%-- TODO implement OBJECTIVE, ACHIEVEMENT, QUALIFICATIONS--%>
+
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
