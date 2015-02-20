@@ -6,7 +6,9 @@ import ru.javawebinar.webapp.sql.Sql;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * GKislin
@@ -77,9 +79,16 @@ public class SqlStorage implements IStorage {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        // TODO implement
-        // SELECT * FROM resume r ORDER BY full_name, uuid
-        return null;
+        return sql.execute("SELECT * FROM resume r ORDER BY full_name, uuid",
+                st -> {
+                    ResultSet rs = st.executeQuery();
+                    List<Resume> list = new ArrayList<Resume>();
+                    while (rs.next()) {
+                        list.add(new Resume(rs.getString("uuid"), rs.getString("full_name"),
+                                rs.getString("location"), rs.getString("home_page")));
+                    }
+                    return list;
+                });
     }
 
     @Override
