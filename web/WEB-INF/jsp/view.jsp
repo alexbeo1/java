@@ -1,7 +1,4 @@
-<%@ page import="ru.javawebinar.webapp.model.MultiTextSection" %>
-<%@ page import="ru.javawebinar.webapp.model.Section" %>
-<%@ page import="ru.javawebinar.webapp.model.SectionType" %>
-<%@ page import="ru.javawebinar.webapp.model.TextSection" %>
+<%@ page import="ru.javawebinar.webapp.model.*" %>
 <%@ page import="ru.javawebinar.webapp.web.HtmlUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -82,7 +79,28 @@
             case EXPERIENCE:
             case EDUCATION:
         %>
- <%--TODO implement--%>
+            </tr>
+            <c:forEach var="org" items="<%=((OrganizationSection) entry.getValue()).getValues()%>">
+                <tr>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty org.link.url}">
+                                ${org.link.name}
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${org.link.url}">${org.link.name}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+                <c:forEach var="period" items="${org.periods}">
+                    <jsp:useBean id="period" type="ru.javawebinar.webapp.model.Organization.Period"/>
+                    <tr>
+                        <td><%=HtmlUtil.format(period.getStartDate())%> - <%=HtmlUtil.format(period.getEndDate())%></td>
+                        <td><b>${period.position}</b><br>${period.content}</td>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
             <%
                 }
             %>

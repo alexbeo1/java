@@ -3,15 +3,16 @@ header {
     color: #2E6E9E;
     font-size: 20px;
     padding: 5px 20px;
-    margin: 6px;
 }
-
+section {
+    padding: 15px 48px;
+}
 footer {
     background: none repeat scroll 0 0 #A6C9E2;
     color: #2E6E9E;
     font-size: 20px;
     padding: 5px 20px;
-    margin: 20px 6px;
+    margin: 20px 0;
 }
 
 section {
@@ -23,6 +24,7 @@ body {
     color: #222222;
     font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
     font-size: 14px;
+    margin: 0;
 }
 
 dl {

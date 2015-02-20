@@ -1,4 +1,5 @@
 <%@ page import="ru.javawebinar.webapp.model.ContactType" %>
+<%@ page import="ru.javawebinar.webapp.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -53,10 +54,15 @@
             <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
         </dl>
         </c:forEach>
+
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <h3><a>${type.title}</a></h3>
+            ${type.htmlType.toHtml(resume.getSection(type), type)}
+        </c:forEach>
+        <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
-    <%-- TODO implement OBJECTIVE, ACHIEVEMENT, QUALIFICATIONS--%>
 
 </section>
 <jsp:include page="fragments/footer.jsp"/>

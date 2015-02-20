@@ -3,6 +3,7 @@ package ru.javawebinar.webapp.web;
 import ru.javawebinar.webapp.WebAppConfig;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.SectionType;
 import ru.javawebinar.webapp.storage.IStorage;
 import ru.javawebinar.webapp.util.Util;
 
@@ -37,6 +38,17 @@ public class ResumeServlet extends HttpServlet {
                 r.removeContact(type);
             } else {
                 r.addContact(type, value);
+            }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            if (type.getHtmlType() == SectionHtmlType.ORGANIZATION) {
+                continue;
+            }
+            if (value == null || value.isEmpty()) {
+                r.getSections().remove(type);
+            } else {
+                r.addSection(type, type.getHtmlType().createSection(value));
             }
         }
         if (Util.isEmpty(uuid)) {

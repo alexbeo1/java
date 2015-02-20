@@ -95,7 +95,7 @@ public class Resume implements Serializable {
         return homePage;
     }
 
-    public Section getSections(SectionType type) {
+    public Section getSection(SectionType type) {
         return sections.get(type);
     }
 
