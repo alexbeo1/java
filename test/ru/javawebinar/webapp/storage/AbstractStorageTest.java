@@ -61,11 +61,6 @@ abstract public class AbstractStorageTest {
     }
 
     @Test
-    public void testSave() throws Exception {
-
-    }
-
-    @Test
     public void testClear() throws Exception {
         storage.clear();
         assertEquals(0, storage.size());

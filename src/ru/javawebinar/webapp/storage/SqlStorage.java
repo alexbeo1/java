@@ -4,7 +4,6 @@ import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 import ru.javawebinar.webapp.sql.Sql;
-import ru.javawebinar.webapp.sql.SqlExecutor;
 import ru.javawebinar.webapp.util.Util;
 
 import java.sql.*;
@@ -158,13 +157,11 @@ public class SqlStorage implements IStorage {
 
     void insertDate(LocalDate startDate, LocalDate endDate) {
         sql.execute("INSERT INTO period (start_date, end_date) VALUES (?,?)",
-                new SqlExecutor<Object>() {
-                    @Override
-                    public Object execute(PreparedStatement st) throws SQLException {
-                        st.setDate(1, Date.valueOf(startDate));
-                        st.setDate(2, Date.valueOf(endDate));
-                        return null;
-                    }
+                st -> {
+                    st.setDate(1, Date.valueOf(startDate));
+                    st.setDate(2, Date.valueOf(endDate));
+                    st.execute();
+                    return null;
                 });
     }
 }
