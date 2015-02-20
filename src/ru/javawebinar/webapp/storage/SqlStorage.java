@@ -4,11 +4,13 @@ import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 import ru.javawebinar.webapp.sql.Sql;
+import ru.javawebinar.webapp.sql.SqlExecutor;
+import ru.javawebinar.webapp.util.Util;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -63,23 +65,24 @@ public class SqlStorage implements IStorage {
     @Override
     public Resume load(final String uuid) {
         return sql.execute("" +
-                "SELECT *\n" +
-                "  FROM resume r\n" +
-                "  LEFT JOIN contact c ON c.resume_uuid=r.uuid\n" +
-                " WHERE r.uuid = ?", st -> {
-            st.setString(1, uuid);
-            ResultSet rs = st.executeQuery();
-            if (!rs.next()) {
-                throw new WebAppException("Resume " + uuid + " is not exist");
-            }
-            Resume r = new Resume(uuid, rs.getString("full_name"),
-                    rs.getString("location"), rs.getString("home_page"));
-            return r;
-        }
+                        "SELECT *\n" +
+                        "  FROM resume r\n" +
+                        "  LEFT JOIN contact c ON c.resume_uuid=r.uuid\n" +
+                        " WHERE r.uuid = ?",
+                st -> {
+                    st.setString(1, uuid);
+                    ResultSet rs = st.executeQuery();
+                    if (!rs.next()) {
+                        throw new WebAppException("Resume " + uuid + " is not exist");
+                    }
+                    Resume r = new Resume(uuid, rs.getString("full_name"), rs.getString("location"), rs.getString("home_page"));
+                    addContact(rs, r);
+                    while (rs.next()) {
+                        addContact(rs, r);
+                    }
+                    return r;
+                });
     }
-
-    );
-}
 
     @Override
     public void delete(String uuid) {
@@ -94,15 +97,21 @@ public class SqlStorage implements IStorage {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        return sql.execute("SELECT * FROM resume r ORDER BY full_name, uuid",
+        return sql.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid ORDER BY full_name, uuid",
                 st -> {
                     ResultSet rs = st.executeQuery();
-                    List<Resume> list = new ArrayList<Resume>();
+                    Map<String, Resume> map = new LinkedHashMap<>();
                     while (rs.next()) {
-                        list.add(new Resume(rs.getString("uuid"), rs.getString("full_name"),
-                                rs.getString("location"), rs.getString("home_page")));
+                        String uuid = rs.getString("uuid");
+                        Resume resume = map.get(uuid);
+                        if (resume == null) {
+                            resume = new Resume(uuid, rs.getString("full_name"),
+                                    rs.getString("location"), rs.getString("home_page"));
+                            map.put(uuid, resume);
+                        }
+                        addContact(rs, resume);
                     }
-                    return list;
+                    return map.values();
                 });
     }
 
@@ -118,6 +127,14 @@ public class SqlStorage implements IStorage {
     @Override
     public boolean isSectionSupported() {
         return false;
+    }
+
+    private void addContact(ResultSet rs, Resume r) throws SQLException {
+        String value = rs.getString("value");
+        if (!Util.isEmpty(value)) {
+            ContactType type = ContactType.valueOf(rs.getString("type"));
+            r.addContact(type, value);
+        }
     }
 
     private void insertContact(Connection conn, Resume r) throws SQLException {
@@ -137,5 +154,17 @@ public class SqlStorage implements IStorage {
             st.setString(1, r.getUuid());
             st.execute();
         }
+    }
+
+    void insertDate(LocalDate startDate, LocalDate endDate) {
+        sql.execute("INSERT INTO period (start_date, end_date) VALUES (?,?)",
+                new SqlExecutor<Object>() {
+                    @Override
+                    public Object execute(PreparedStatement st) throws SQLException {
+                        st.setDate(1, Date.valueOf(startDate));
+                        st.setDate(2, Date.valueOf(endDate));
+                        return null;
+                    }
+                });
     }
 }

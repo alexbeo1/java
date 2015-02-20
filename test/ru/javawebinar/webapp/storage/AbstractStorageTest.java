@@ -12,10 +12,7 @@ import ru.javawebinar.webapp.model.SectionType;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -112,7 +109,7 @@ abstract public class AbstractStorageTest {
                 return 0;
             }
         });
-        assertEquals(list, storage.getAllSorted());
+        assertEquals(list, new ArrayList<>(storage.getAllSorted()));
     }
 
     @Test

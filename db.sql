@@ -21,4 +21,17 @@ CREATE TABLE contact (
 CREATE UNIQUE INDEX contact_idx ON contact
 USING btree (resume_uuid, type);
 
+CREATE TABLE text_section(
+  id SERIAL,
+  resume_uuid CHAR(36) NOT NULL,
+  type VARCHAR NOT NULL,
+  values VARCHAR NOT NULL,
+  CONSTRAINT text_section_pkey PRIMARY KEY(id),
+  FOREIGN KEY (resume_uuid) REFERENCES resume (uuid) ON DELETE CASCADE
+);
 
+CREATE TABLE period (
+  id SERIAL,
+  start_date DATE,
+  end_date DATE
+);
