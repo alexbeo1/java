@@ -32,4 +32,20 @@ public class Sql {
             throw new WebAppException("SQL failed", e);
         }
     }
+
+    public <T> T execute(SqlTransaction<T> executor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new WebAppException("Transaction failed", e);
+        }
+    }
 }
